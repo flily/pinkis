@@ -18,20 +18,20 @@ func IsStruct(v interface{}) bool {
 	return instance.Kind() == reflect.Struct
 }
 
-func IsNilValue(value reflect.Value) bool {
+func IsNilValue(value reflect.Value) (bool, bool) {
 	switch value.Kind() {
 	case reflect.Invalid:
-		return true
+		return true, false
 
 	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
-		return value.IsNil()
+		return false, value.IsNil()
 
 	default:
-		return false
+		return false, false
 	}
 }
 
-func IsNil(v interface{}) bool {
+func IsNil(v interface{}) (bool, bool) {
 	value := reflect.ValueOf(v)
 	return IsNilValue(value)
 }
@@ -47,6 +47,11 @@ func IsValueInstance(value reflect.Value) bool {
 	default:
 		return true
 	}
+}
+
+func NewPointerOfType(t reflect.Type) reflect.Value {
+	pointer := reflect.New(t)
+	return pointer
 }
 
 func NewPointerOf(value reflect.Value) reflect.Value {
@@ -158,17 +163,26 @@ func IsExportedName(name string) bool {
 }
 
 func NewValueOfType(t reflect.Type) reflect.Value {
-	pointer := reflect.New(t)
+	pointer := NewPointerOfType(t)
 	return pointer.Elem()
 }
 
-func NewNil() reflect.Value {
+func NewUntypedNil() reflect.Value {
 	return reflect.Value{}
 }
 
+func NewTypedNil(t reflect.Type) reflect.Value {
+	return reflect.Zero(t)
+}
+
 func NewValueOfValue(v reflect.Value) reflect.Value {
-	if IsNilValue(v) {
-		return NewNil()
+	isUntypedNil, isTypedNil := IsNilValue(v)
+	if isUntypedNil {
+		return NewUntypedNil()
+	}
+
+	if isTypedNil {
+		return NewTypedNil(v.Type())
 	}
 
 	return NewValueOfType(v.Type())

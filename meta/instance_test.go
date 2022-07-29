@@ -29,12 +29,12 @@ func TestIsPointerOfNil(t *testing.T) {
 
 func TestIsNil(t *testing.T) {
 	var i *int
-	if !IsNil(i) {
-		t.Error("IsNil(i) should be true")
+	if u, n := IsNil(i); u || !n {
+		t.Errorf("IsNil(i) should be (false, true), got (%v, %v)", u, n)
 	}
 
-	if !IsNil(nil) {
-		t.Error("IsNil(nil) should be true")
+	if u, n := IsNil(nil); !u || n {
+		t.Errorf("IsNil(nil) should be (true, false), got (%v, %v)", u, n)
 	}
 }
 

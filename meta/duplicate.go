@@ -1,7 +1,6 @@
 package meta
 
 import (
-	"fmt"
 	"reflect"
 	"unsafe"
 )
@@ -84,23 +83,16 @@ func duplicateValueForStruct(data reflect.Value) (reflect.Value, error) {
 
 	for i := 0; i < data.NumField(); i++ {
 		fieldValue := data.Field(i)
-		fmt.Printf("source field: %#v\n", fieldValue)
 		fieldCopy, err := duplicateValueInstance(fieldValue)
 		if err != nil {
 			return reflect.Value{}, err
 		}
 
-		fmt.Printf("copy field: %#v\n", fieldCopy)
 		field := newStruct.Field(i)
 		UnsafeValueSet(field, fieldCopy)
 	}
 
 	return newStruct, nil
-}
-
-func duplicateValueForInvalid(data reflect.Value) (reflect.Value, error) {
-	result := reflect.Value{}
-	return result, nil
 }
 
 func duplicateForBool(data reflect.Value) (reflect.Value, error) {
@@ -156,27 +148,17 @@ func duplicateForInterface(data reflect.Value) (reflect.Value, error) {
 	return value, nil
 }
 
-func isDuplicateableNil(data reflect.Value) bool {
-	switch data.Kind() {
-	case reflect.Ptr, reflect.Interface, reflect.Map, reflect.Slice:
-		return data.IsNil()
-
-	default:
-		return false
-	}
-}
-
 func duplicateForNilValue(data reflect.Value) (reflect.Value, error) {
-	result := NewValueOfValue(data)
+	result := NewValueOfType(data.Type())
 	return result, nil
 }
 
 func duplicateValueInstance(data reflect.Value) (reflect.Value, error) {
-	if !data.IsValid() {
-		return reflect.Value{}, ErrUntypedNil
-	}
+	isUntypedNil, isTypedNil := IsNilValue(data)
+	if isUntypedNil {
+		return NewUntypedNil(), ErrUntypedNil
 
-	if isDuplicateableNil(data) {
+	} else if isTypedNil {
 		return duplicateForNilValue(data)
 	}
 

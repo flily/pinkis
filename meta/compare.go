@@ -94,7 +94,9 @@ func equalForString(a reflect.Value, b reflect.Value) bool {
 
 func equalForValue(a reflect.Value, b reflect.Value) bool {
 	if !a.IsValid() || !b.IsValid() {
-		return IsNilValue(a) && IsNilValue(b)
+		isAUntypedNil, isATypedNil := IsNilValue(a)
+		isBUntypedNil, isBTypedNil := IsNilValue(b)
+		return (isAUntypedNil || isATypedNil) && (isBUntypedNil || isBTypedNil)
 	}
 
 	if a.Type() != b.Type() {
