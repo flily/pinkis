@@ -9,7 +9,7 @@ import (
 var (
 	ErrMetaError      = errors.New("meta error")
 	ErrNotDuplcatable = NewMetaError("not duplicatable")
-	ErrUntypedNil  = NewMetaError("untyped nil is unacceptable")
+	ErrUntypedNil     = NewMetaError("untyped nil is unacceptable")
 )
 
 type MetaError struct {

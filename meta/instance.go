@@ -49,12 +49,12 @@ func IsValueInstance(value reflect.Value) bool {
 	}
 }
 
-func NewPointerOfType(t reflect.Type) reflect.Value {
+func NewPointerOf(t reflect.Type) reflect.Value {
 	pointer := reflect.New(t)
 	return pointer
 }
 
-func NewPointerOf(value reflect.Value) reflect.Value {
+func NewPointerTo(value reflect.Value) reflect.Value {
 	vt := value.Type()
 	addr := reflect.New(vt)
 	addr.Elem().Set(value)
@@ -104,7 +104,7 @@ func OriginOf(value reflect.Value, chain []ValueReferenceInfo) reflect.Value {
 
 		switch info.ElemType {
 		case ElemPointer:
-			value = NewPointerOf(value)
+			value = NewPointerTo(value)
 
 		case ElemInterface:
 			value = value.Convert(info.SourceType)
@@ -163,7 +163,7 @@ func IsExportedName(name string) bool {
 }
 
 func NewValueOfType(t reflect.Type) reflect.Value {
-	pointer := NewPointerOfType(t)
+	pointer := NewPointerOf(t)
 	return pointer.Elem()
 }
 
