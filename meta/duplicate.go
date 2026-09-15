@@ -11,7 +11,7 @@ func MakeUnsafeRef(data reflect.Value) reflect.Value {
 	var result reflect.Value
 
 	switch data.Kind() {
-	case reflect.Ptr:
+	case reflect.Pointer:
 		instance := data.Elem()
 		instancePointer := unsafe.Pointer(instance.UnsafeAddr())
 		unsafePointer := reflect.NewAt(instance.Type(), instancePointer)
@@ -190,7 +190,7 @@ func duplicateValueInstance(data reflect.Value) (reflect.Value, error) {
 	case reflect.Float32, reflect.Float64:
 		value, err = duplicateForFloat(data)
 
-	case reflect.Ptr:
+	case reflect.Pointer:
 		value, err = duplicateForPointer(data)
 
 	case reflect.String:

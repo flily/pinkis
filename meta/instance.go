@@ -6,13 +6,13 @@ import (
 )
 
 // Is v a pointer
-func IsPointer(v interface{}) bool {
+func IsPointer(v any) bool {
 	value := reflect.ValueOf(v)
-	return value.Kind() == reflect.Ptr
+	return value.Kind() == reflect.Pointer
 }
 
 // Is v a struct or a pointer to a struct
-func IsStruct(v interface{}) bool {
+func IsStruct(v any) bool {
 	instance := InstanceOf(v)
 
 	return instance.Kind() == reflect.Struct
@@ -23,7 +23,7 @@ func IsNilValue(value reflect.Value) (bool, bool) {
 	case reflect.Invalid:
 		return true, false
 
-	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Ptr, reflect.Slice:
+	case reflect.Chan, reflect.Func, reflect.Interface, reflect.Map, reflect.Pointer, reflect.Slice:
 		return false, value.IsNil()
 
 	default:
@@ -31,7 +31,7 @@ func IsNilValue(value reflect.Value) (bool, bool) {
 	}
 }
 
-func IsNil(v interface{}) (bool, bool) {
+func IsNil(v any) (bool, bool) {
 	value := reflect.ValueOf(v)
 	return IsNilValue(value)
 }
@@ -41,7 +41,7 @@ func IsValueInstance(value reflect.Value) bool {
 	case reflect.Interface:
 		return false
 
-	case reflect.Ptr:
+	case reflect.Pointer:
 		return value.IsNil()
 
 	default:
@@ -80,7 +80,7 @@ func ValueToInstance(value reflect.Value) (reflect.Value, []ValueReferenceInfo) 
 		}
 
 		switch value.Kind() {
-		case reflect.Ptr:
+		case reflect.Pointer:
 			info.ElemType = ElemPointer
 
 		case reflect.Interface:

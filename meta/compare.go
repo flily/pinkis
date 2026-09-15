@@ -116,7 +116,7 @@ func equalForValue(a reflect.Value, b reflect.Value) bool {
 	case reflect.Map:
 		return equalForMap(a, b)
 
-	case reflect.Interface, reflect.Ptr:
+	case reflect.Interface, reflect.Pointer:
 		ea := a.Elem()
 		eb := b.Elem()
 		return equalForValue(ea, eb)

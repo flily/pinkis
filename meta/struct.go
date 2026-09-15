@@ -6,7 +6,7 @@ import (
 
 func GetFieldValue(data interface{}, field string) (reflect.Value, error) {
 	dataValue := reflect.ValueOf(data)
-	if dataValue.Kind() == reflect.Ptr {
+	if dataValue.Kind() == reflect.Pointer {
 		dataValue = dataValue.Elem()
 	}
 
