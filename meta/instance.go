@@ -116,7 +116,7 @@ func OriginOf(value reflect.Value, chain []ValueReferenceInfo) reflect.Value {
 
 // Get the instance of a value, dereference all levels.
 // Return final value, and dereferenced chain.
-func ValueInstanceChainOf(data interface{}) (reflect.Value, []ValueReferenceInfo) {
+func ValueInstanceChainOf(data any) (reflect.Value, []ValueReferenceInfo) {
 	value := reflect.ValueOf(data)
 	return ValueToInstance(value)
 }
@@ -130,7 +130,7 @@ func ValueInstanceOf(value reflect.Value) reflect.Value {
 // Get the actual instance of a value, dereference all levels.
 // If a nil pointer is got, return the reflect.Value represents this pointer. If an untyped nil is
 // got, return an invalid reflect.Value, which is returned by reflect.ValueOf().
-func InstanceOf(data interface{}) reflect.Value {
+func InstanceOf(data any) reflect.Value {
 	value := reflect.ValueOf(data)
 	return ValueInstanceOf(value)
 }

@@ -5,7 +5,7 @@ import (
 )
 
 func TestValueEqualSimpleValue(t *testing.T) {
-	var a, b interface{}
+	var a, b any
 
 	a = 1
 	b = 1

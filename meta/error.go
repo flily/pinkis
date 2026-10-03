@@ -25,7 +25,7 @@ func (e MetaError) Unwrap() error {
 	return e.Base
 }
 
-func NewMetaError(format string, args ...interface{}) error {
+func NewMetaError(format string, args ...any) error {
 	return MetaError{
 		Base:    ErrMetaError,
 		Message: fmt.Sprintf(format, args...),

@@ -4,7 +4,7 @@ import (
 	"reflect"
 )
 
-func GetFieldValue(data interface{}, field string) (reflect.Value, error) {
+func GetFieldValue(data any, field string) (reflect.Value, error) {
 	dataValue := reflect.ValueOf(data)
 	if dataValue.Kind() == reflect.Pointer {
 		dataValue = dataValue.Elem()
@@ -19,7 +19,7 @@ func GetFieldValue(data interface{}, field string) (reflect.Value, error) {
 	return fieldValue, err
 }
 
-func GetField(data interface{}, field string) (interface{}, error) {
+func GetField(data any, field string) (any, error) {
 	fieldValue, err := GetFieldValue(data, field)
 	if err != nil {
 		return nil, err
@@ -28,7 +28,7 @@ func GetField(data interface{}, field string) (interface{}, error) {
 	return fieldValue.Interface(), nil
 }
 
-func SetField(data interface{}, field string, value interface{}) (interface{}, error) {
+func SetField(data any, field string, value any) (any, error) {
 	fieldValue, err := GetFieldValue(data, field)
 	if err != nil {
 		return nil, err

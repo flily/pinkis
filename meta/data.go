@@ -4,14 +4,14 @@ import (
 	"reflect"
 )
 
-func InstanceEqual(a interface{}, b interface{}) bool {
+func InstanceEqual(a any, b any) bool {
 	ia := InstanceOf(a)
 	ib := InstanceOf(b)
 
 	return ValueEqual(ia, ib)
 }
 
-func iArrayEqual(a interface{}, b interface{}, compareInstance bool) (bool, error) {
+func iArrayEqual(a any, b any, compareInstance bool) (bool, error) {
 	valueA := reflect.ValueOf(a)
 	if valueA.Kind() != reflect.Array && valueA.Kind() != reflect.Slice {
 		e := NewMetaError("a is not array or slice, but %s", valueA.Kind())
@@ -49,25 +49,25 @@ func iArrayEqual(a interface{}, b interface{}, compareInstance bool) (bool, erro
 	return true, nil
 }
 
-func ArrayEqualInfo(a interface{}, b interface{}) (bool, error) {
+func ArrayEqualInfo(a any, b any) (bool, error) {
 	return iArrayEqual(a, b, false)
 }
 
-func ArrayEqual(a interface{}, b interface{}) bool {
+func ArrayEqual(a any, b any) bool {
 	eq, _ := ArrayEqualInfo(a, b)
 	return eq
 }
 
-func ArrayInstanceEqualInfo(a interface{}, b interface{}) (bool, error) {
+func ArrayInstanceEqualInfo(a any, b any) (bool, error) {
 	return iArrayEqual(a, b, true)
 }
 
-func ArrayInstanceEqual(a interface{}, b interface{}) bool {
+func ArrayInstanceEqual(a any, b any) bool {
 	eq, _ := ArrayInstanceEqualInfo(a, b)
 	return eq
 }
 
-func iArrayItemEqual(a interface{}, b interface{}, compareInstance bool) (bool, error) {
+func iArrayItemEqual(a any, b any, compareInstance bool) (bool, error) {
 	valueA := reflect.ValueOf(a)
 	if valueA.Kind() != reflect.Array && valueA.Kind() != reflect.Slice {
 		e := NewMetaError("a is not array or slice, but %s", valueA.Kind())
@@ -133,20 +133,20 @@ func iArrayItemEqual(a interface{}, b interface{}, compareInstance bool) (bool, 
 	return true, nil
 }
 
-func ArrayItemEqualInfo(a interface{}, b interface{}) (bool, error) {
+func ArrayItemEqualInfo(a any, b any) (bool, error) {
 	return iArrayItemEqual(a, b, false)
 }
 
-func ArrayItemEqual(a interface{}, b interface{}) bool {
+func ArrayItemEqual(a any, b any) bool {
 	eq, _ := ArrayItemEqualInfo(a, b)
 	return eq
 }
 
-func ArrayItemInstanceEqualInfo(a interface{}, b interface{}) (bool, error) {
+func ArrayItemInstanceEqualInfo(a any, b any) (bool, error) {
 	return iArrayItemEqual(a, b, true)
 }
 
-func ArrayItemInstanceEqual(a interface{}, b interface{}) bool {
+func ArrayItemInstanceEqual(a any, b any) bool {
 	eq, _ := ArrayItemInstanceEqualInfo(a, b)
 	return eq
 }
